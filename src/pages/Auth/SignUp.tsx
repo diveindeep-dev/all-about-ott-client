@@ -1,9 +1,10 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signUpApi } from '../../api';
 import { emailRegex, passwordRegex, nameRegex } from '../../utils/regex';
 
-interface SignUpValue extends User {
+interface SignUpValue extends SignInValue {
+  name: string;
   passwordConfirm: string;
 }
 
@@ -15,9 +16,9 @@ const initialValue: SignUpValue = {
 };
 
 function SignUp() {
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [values, setValues] = useState<SignUpValue>(initialValue);
   const [error, setError] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => setError(''), 2000);
@@ -49,7 +50,7 @@ function SignUp() {
       return setError('이름은 최소 2자리 최대 10자리 가능합니다.');
     }
 
-    const user: User = {
+    const user: SignUpUser = {
       mail,
       name,
       password,
@@ -59,7 +60,7 @@ function SignUp() {
 
     if (result) {
       if (result.status === 201) {
-        setIsSuccess(true);
+        navigate('/signin');
       } else {
         setError(result.data.message);
         setValues(initialValue);
@@ -68,10 +69,6 @@ function SignUp() {
       setError(`서버가 불안정합니다. 다시 시도해주세요.`);
     }
   };
-
-  if (isSuccess) {
-    return <Navigate replace to="/signin" />;
-  }
 
   return (
     <div>

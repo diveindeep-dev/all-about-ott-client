@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signUpApi } from '../../api';
+import { signUpApi } from '../../features/auth/authApi';
 import { emailRegex, passwordRegex, nameRegex } from '../../utils/regex';
 
 interface SignUpValue extends SignInValue {

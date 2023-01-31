@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { signInApi } from '../../api';
+import { signInApi } from '../../features/auth/authApi';
 import { fetchUser } from '../../features/auth/authSlice';
 import { emailRegex } from '../../utils/regex';
 

@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signInApi } from '../../features/auth/authApi';
 import { fetchUser } from '../../features/auth/authSlice';
-import { emailRegex } from '../../utils/regex';
+import { idRegex } from '../../utils/regex';
 
 const initialValue: SignInValue = {
-  mail: '',
+  profileId: '',
   password: '',
 };
 
@@ -22,17 +22,17 @@ function SignIn() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { mail, password } = values;
+    const { profileId, password } = values;
 
-    if (!mail || !password) {
+    if (!profileId || !password) {
       return setError('모든 항목을 입력해주세요.');
     }
-    if (!emailRegex.test(mail)) {
-      return setError('이메일 형식이 유효하지 않습니다.');
+    if (!idRegex.test(profileId)) {
+      return setError('ID 형식이 유효하지 않습니다.');
     }
 
     const user: SignInValue = {
-      mail,
+      profileId,
       password,
     };
 
@@ -58,8 +58,8 @@ function SignIn() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="mail"
-          placeholder="mail"
+          name="profileId"
+          placeholder="ID"
           onChange={handleChange}
         />
         <input

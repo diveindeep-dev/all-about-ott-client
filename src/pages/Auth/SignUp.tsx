@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signUpApi } from '../../features/auth/authApi';
-import { emailRegex, passwordRegex, nameRegex } from '../../utils/regex';
+import { idRegex, passwordRegex, nameRegex } from '../../utils/regex';
 
 interface SignUpValue extends SignInValue {
   name: string;
@@ -10,7 +10,7 @@ interface SignUpValue extends SignInValue {
 
 const initialValue: SignUpValue = {
   name: '',
-  mail: '',
+  profileId: '',
   password: '',
   passwordConfirm: '',
 };
@@ -30,16 +30,18 @@ function SignUp() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { mail, name, password, passwordConfirm } = values;
+    const { profileId, name, password, passwordConfirm } = values;
 
-    if (!mail || !name || !password || !passwordConfirm) {
+    if (!profileId || !name || !password || !passwordConfirm) {
       return setError('모든 항목을 입력해주세요.');
     }
     if (password !== passwordConfirm) {
       return setError('비밀번호가 일치하지 않습니다.');
     }
-    if (!emailRegex.test(mail)) {
-      return setError('이메일 형식이 유효하지 않습니다.');
+    if (!idRegex.test(profileId)) {
+      return setError(
+        'ID는 최소 4자리 이상 가능합니다. 숫자와 영문만 가능하며 대소문자를 구분합니다.',
+      );
     }
     if (!passwordRegex.test(password)) {
       return setError(
@@ -47,11 +49,13 @@ function SignUp() {
       );
     }
     if (!nameRegex.test(name)) {
-      return setError('이름은 최소 2자리 최대 10자리 가능합니다.');
+      return setError(
+        '이름은 한글과 영문, 숫자가 가능합니다. 최소 2자리, 최대 10자리 가능합니다.',
+      );
     }
 
     const user: SignUpUser = {
-      mail,
+      profileId,
       name,
       password,
     };
@@ -76,8 +80,8 @@ function SignUp() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="mail"
-          placeholder="mail"
+          name="profileId"
+          placeholder="ID"
           onChange={handleChange}
         />
         <input

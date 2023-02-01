@@ -5,7 +5,12 @@ axios.defaults.baseURL = SERVER_URL;
 
 export const signUpApi = async (user: SignUpUser) => {
   try {
-    const response = await axios.post('/api/auth/signup', user);
+    const newUser = {
+      profile_id: user.profileId,
+      name: user.name,
+      password: user.password,
+    };
+    const response = await axios.post('/api/auth/signup', newUser);
     return { data: response.data, status: response.status };
   } catch (error: any) {
     return error.response;
@@ -14,7 +19,11 @@ export const signUpApi = async (user: SignUpUser) => {
 
 export const signInApi = async (user: SignInValue) => {
   try {
-    const response = await axios.post('/api/auth/signin', user);
+    const signInUser = {
+      profile_id: user.profileId,
+      password: user.password,
+    };
+    const response = await axios.post('/api/auth/signin', signInUser);
     return { data: response.data, status: response.status };
   } catch (error: any) {
     return error.response;

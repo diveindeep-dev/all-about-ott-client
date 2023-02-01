@@ -10,7 +10,7 @@ export const fetchUser = createAsyncThunk('auth/fetchToken', async () => {
   const token = localStorage.getItem('token');
   const headers = { headers: { authorization: `Bearer ${token}` } };
   const response = await getUserByToken(headers);
-  return response.data;
+  return { data: response.data, status: response.status };
 });
 
 export const authSlice = createSlice({
@@ -25,8 +25,8 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUser.fulfilled, (state, action) => {
-      if (action.payload.code === 200) {
-        state.signInUser = action.payload.signInUser;
+      if (action.payload.status === 200) {
+        state.signInUser = action.payload.data.signInUser;
         state.isAuthenticated = true;
       } else {
         localStorage.removeItem('token');
